@@ -1,18 +1,33 @@
-const container = document.getElementById("container");
+const grid = document.getElementById("grid");
+let size = 16
+let myColor = 'green'
 
-function makeRows(rows, cols) {
-  container.style.setProperty('--grid-rows', rows);
-  container.style.setProperty('--grid-cols', cols);
-  for (let c = 0; c < (rows * cols); c++) {
-    let cell = document.createElement("div");
-    cell.innerText = (c + 1);
-    container.appendChild(cell).className = "grid-item";
-  };
+function makeGrid(size) {
+    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`
+    grid.style.gridTemplateRows = `repeat(${size}, 1fr)`
+    for (let i = 0; i < size ** 2; i++) {
+        const gridElement = document.createElement('div')
+        gridElement.classList = "grid-item"
+        gridElement.addEventListener('mouseover', () => {
+            gridElement.style.backgroundColor = myColor
+        })
+       grid.appendChild(gridElement)
+    }
+}
+
+function resetCanvas(){
+   size = prompt("What size do you want? (max 100)")
+   if (size > 100) {
+    size = 100
+   }
+   else if (size < 1) {
+    size = 1
+   }
+   grid.innerHTML = ''
+   makeGrid(size)
 };
 
-makeRows(16, 16);
+const resetBtn = document.getElementById('reset');
+resetBtn.addEventListener('click', resetCanvas)
 
-const squares = document.querySelectorAll(".grid-item")
-squares.forEach((square) => {
-    square.addEventListener('mouseover', () => square.style.backgroundColor ="green")
-});
+makeGrid(size)
